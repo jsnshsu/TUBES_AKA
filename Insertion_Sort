@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+using namespace std;
+
+struct Film {
+    string judul;
+    int rating;
+    int tahunRilis;
+
+    Film(string j, int r, int t) : judul(j), rating(r), tahunRilis(t) {}
+};
+
+void insertionSort(vector<Film>& films) {
+    int n = films.size();
+
+    for (int i = 1; i < n; i++) {
+        Film key = films[i];
+        int j = i - 1;
+
+        while (j >= 0 && films[j].rating < key.rating) {
+            films[j + 1] = films[j];
+            j--;
+        }
+
+        films[j + 1] = key;
+    }
+}
+
+void printFilms(const vector<Film>& films) {
+    for (const auto& film : films) {
+        cout << "Judul: " << film.judul << ", Rating: " << film.rating << ", Tahun Rilis: " << film.tahunRilis << endl;
+    }
+}
+
+int main() {
+    vector<Film> films;
+    int jumlahFilm;
+
+    cout << "Masukkan jumlah film: ";
+    cin >> jumlahFilm;
+    cin.ignore();
+
+    cout << "\nMasukkan data film dalam format: <Judul> <Rating> <Tahun Rilis>\n";
+    for (int i = 0; i < jumlahFilm; ++i) {
+        string input, judul;
+        int rating, tahunRilis;
+
+        getline(cin, input);
+
+        stringstream ss(input);
+        ss >> judul >> rating >> tahunRilis;
+
+        films.emplace_back(judul, rating, tahunRilis);
+    }
+
+    cout << "\nDaftar Film sebelum pengurutan:\n";
+    printFilms(films);
+
+    insertionSort(films);
+
+    cout << "\nDaftar Film setelah pengurutan berdasarkan rating (tertinggi ke terendah):\n";
+    printFilms(films);
+
+    return 0;
+}
