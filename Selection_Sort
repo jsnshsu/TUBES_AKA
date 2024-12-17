@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+using namespace std;
+
+struct Film {
+    string judul;
+    int rating;
+    int tahunRilis;
+
+    Film(string j, int r, int t) : judul(j), rating(r), tahunRilis(t) {}
+};
+
+void selectionSort(vector<Film>& films) {
+    int n = films.size();
+
+    for (int i = 0; i < n - 1; i++) {
+        int maxIndex = i;
+
+        for (int j = i + 1; j < n; j++) {
+            if (films[j].rating > films[maxIndex].rating) {
+                maxIndex = j;
+            }
+        }
+
+        if (maxIndex != i) {
+            swap(films[i], films[maxIndex]);
+        }
+    }
+}
+
+void printFilms(const vector<Film>& films) {
+    for (const auto& film : films) {
+        cout << "Judul: " << film.judul << ", Rating: " << film.rating << ", Tahun Rilis: " << film.tahunRilis << endl;
+    }
+}
+
+int main() {
+    vector<Film> films;
+    int jumlahFilm;
+
+    cout << "Masukkan jumlah film: ";
+    cin >> jumlahFilm;
+    cin.ignore();
+    cout << "Masukkan data berdasarkan format (judul, rating, tahun)" << endl;
+
+    for (int i = 0; i < jumlahFilm; i++) {
+        string input;
+        getline(cin, input);
+
+        stringstream ss(input);
+        string judul;
+        int rating, tahunRilis;
+
+        ss >> ws;
+        getline(ss, judul, ' ');
+        ss >> rating >> tahunRilis;
+
+        films.push_back(Film(judul, rating, tahunRilis));
+    }
+
+    cout << "\nDaftar Film sebelum pengurutan:\n";
+    printFilms(films);
+
+    selectionSort(films);
+
+    cout << "\nDaftar Film setelah pengurutan berdasarkan rating (tertinggi ke terendah):\n";
+    printFilms(films);
+
+    return 0;
+}
